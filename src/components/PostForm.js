@@ -12,7 +12,7 @@ class PostForm extends React.Component {
             option: "",
             token: "",
             search: "",
-            count: 10,
+            count: 20,
             page: 0,
             searchType: "",
             mahasiswa: []
@@ -20,7 +20,7 @@ class PostForm extends React.Component {
     }
 
     /* 
-    serialize function: Converts {data} into url-encoded form
+    serialize function: Converts {obj} into url-encoded form
     */
     serialize = function (obj) {
         var str = [];
@@ -94,8 +94,7 @@ class PostForm extends React.Component {
 
                 // output data (handleOutput)
                 if (response.data.code >= 0) {
-                    this.assignMahasiswa(response.payload)
-                    console.log(response.payload)
+                    this.assignMahasiswa(response.data.payload)
                 }
                 else {
                     ReactDOM.render(<div>{statusSearch}</div>, document.getElementById('statusSearch'))
@@ -162,20 +161,28 @@ class PostForm extends React.Component {
                     <button type="submit" onClick={this.optionLogin}>Login</button>
                     <div id="statusLogin"></div>
                 </form>
-				
+
                 <br></br>
 
-				<form onSubmit={this.handleSearch}>
-					<div id="user"></div>
-					<div>
-						<input placeholder="Type in Name or NIM" ref="search" type="text" name="search" value={search} onChange={this.handleChange}></input>
-					</div>
-					<button type="submit" onClick={this.searchTypeName}>Search by Name</button>
-					<button type="submit" onClick={this.searchTypeId}>Search by NIM</button>
-					<div id="statusSearch"></div>
-					<div>{}</div>
-				</form>
-                
+                <form onSubmit={this.handleSearch}>
+                    <div id="user"></div>
+                    <div>
+                        <input placeholder="Type in Name or NIM" ref="search" type="text" name="search" value={search} onChange={this.handleChange}></input>
+                    </div>
+                    <button type="submit" onClick={this.searchTypeName}>Search by Name</button>
+                    <button type="submit" onClick={this.searchTypeId}>Search by NIM</button>
+                    <div id="statusSearch"></div>
+                    <div>
+                        Search results :
+                        {
+                            mahasiswa.length ?
+                            mahasiswa.map(mhs => (<li key={mhs.nim_tpb}>{mhs.name}</li>)) :
+                            null
+                        }
+                    </div>
+                </form>
+                <button id="prev" type="submit" disabled={true}>Prev</button>
+                <button id="next" type="submit" disabled={true}>Next</button>
             </div>
         )
     }
