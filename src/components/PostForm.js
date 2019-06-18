@@ -49,14 +49,24 @@ class PostForm extends React.Component {
 
     searchTypeName = e => {
         this.setState({searchType: "byname"})
+        this.setState({page: 0})        // reset page
     }
 
     searchTypeId = e => {
         this.setState({searchType: "byid"})
+        this.setState({page: 0 })       // reset page
     }
 
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value })
+    }
+
+    handleNext = e => {
+        this.setState({page: (this.state.page + 1)})
+    }
+
+    handlePrev = e => {
+        this.setState({page: (this.state.page - 1)})
     }
 
     handleSearch = e => {
@@ -98,6 +108,8 @@ class PostForm extends React.Component {
                 }
                 else {
                     ReactDOM.render(<div>{statusSearch}</div>, document.getElementById('statusSearch'))
+                    document.getElementById("next").disabled = true
+                    this.assignMahasiswa([])
                 }
             })
             .catch(error => {
@@ -174,15 +186,17 @@ class PostForm extends React.Component {
                     <div id="statusSearch"></div>
                     <div>
                         Search results :
+                        <br></br>
+                        Nama | NIM TPB | NIM Jurusan | Prodi
                         {
                             mahasiswa.length ?
-                            mahasiswa.map(mhs => (<li key={mhs.nim_tpb}>{mhs.name}</li>)) :
+                            mahasiswa.map(mhs => (<li key={mhs.nim_tpb}>{mhs.name} | {mhs.nim_tpb} | {mhs.nim_jur} | {mhs.prodi}</li>)) :
                             null
                         }
                     </div>
+                    <button id="prev" type="submit" disabled={false} onClick={this.handlePrev}>Prev</button>
+                    <button id="next" type="submit" disabled={false} onClick={this.handleNext}>Next</button>
                 </form>
-                <button id="prev" type="submit" disabled={true}>Prev</button>
-                <button id="next" type="submit" disabled={true}>Next</button>
             </div>
         )
     }
