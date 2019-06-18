@@ -47,8 +47,6 @@ class PostForm extends React.Component {
         this.setState({mahasiswa: data})
     }
 
-    /*
-
     searchTypeName = e => {
         this.setState({searchType: "byname"})
     }
@@ -57,12 +55,10 @@ class PostForm extends React.Component {
         this.setState({searchType: "byid"})
     }
 
-    */
-
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value })
     }
-    /*
+
     handleSearch = e => {
         e.preventDefault()
 
@@ -109,7 +105,6 @@ class PostForm extends React.Component {
                 console.log(error)
             })
     }
-    */
 
     handleRegisterLogin = e => {
         e.preventDefault()
