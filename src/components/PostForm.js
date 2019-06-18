@@ -162,7 +162,19 @@ class PostForm extends React.Component {
                     <button type="submit" onClick={this.optionLogin}>Login</button>
                     <div id="statusLogin"></div>
                 </form>
-                
+				
+                <br></br>
+
+				<form onSubmit={this.handleSearch}>
+					<div id="user"></div>
+					<div>
+						<input placeholder="Type in Name or NIM" ref="search" type="text" name="search" value={search} onChange={this.handleChange}></input>
+					</div>
+					<button type="submit" onClick={this.searchTypeName}>Search by Name</button>
+					<button type="submit" onClick={this.searchTypeId}>Search by NIM</button>
+					<div id="statusSearch"></div>
+					<div>{}</div>
+				</form>
                 
             </div>
         )
@@ -170,17 +182,6 @@ class PostForm extends React.Component {
 }
 
 /*
-<br></br>
 
-<form onSubmit={this.handleSearch}>
-    <div id="user"></div>
-    <div>
-        <input placeholder="Type in Name or NIM" ref="search" type="text" name="search" value={search} onChange={this.handleChange}></input>
-    </div>
-    <button type="submit" onClick={this.searchTypeName}>Search by Name</button>
-    <button type="submit" onClick={this.searchTypeId}>Search by NIM</button>
-    <div id="statusSearch"></div>
-    <div>{}</div>
-</form>
 */
 export default PostForm
