@@ -1,1 +1,0 @@
-# Simple-NIM-Finder-Project
