@@ -16,7 +16,9 @@ class PostForm extends React.Component {
             count: 20,
             page: 0,
             searchType: "",
-            mahasiswa: []
+            mahasiswa: [],
+            prev: true,
+            next: true
         }
     }
 
@@ -75,14 +77,12 @@ class PostForm extends React.Component {
     handleSearch = e => {
         e.preventDefault()
 
-        /*
         if (this.state.page > 0) {
-            document.getElementById("prev").disabled = false
+            this.setState({prev: false})
         }
         else {
-            document.getElementById("prev").disabled = true
+            this.setState({prev: true})
         }
-        */
 
         var data
 
@@ -117,6 +117,30 @@ class PostForm extends React.Component {
                 // output data (handleOutput)
                 if (response.data.code >= 0) {
                     this.assignMahasiswa(response.data.payload)
+                    data = {
+                        "name": this.state.searchTemp,
+                        "count": this.state.count,
+                        "page": this.state.page + 1
+                    }
+                    getRequest = {
+                        method: 'GET',
+                        url: 'https://api.stya.net/nim/' + this.state.searchType + "?" + this.serialize(data),
+                        headers: {
+                            'Auth-Token': this.state.token
+                        }
+                    }
+                    axios(getRequest)
+                        .then(response => {
+                            if (response.data.code === 0) {
+                                this.setState({next: true})
+                            }
+                            else if (response.data.code > 0) {
+                                this.setState({next: false})
+                            }
+                        })
+                        .catch(error => {
+                            console.lof(error)
+                        })
                 }
                 else {
                     ReactDOM.render(<div>{statusSearch}</div>, document.getElementById('statusSearch'))
@@ -170,7 +194,7 @@ class PostForm extends React.Component {
     }
 
     render() {
-        const { username, password, search, mahasiswa } = this.state
+        const { username, password, search, mahasiswa, prev, next } = this.state
         return (
             <div>
                 <h1>
@@ -183,21 +207,21 @@ class PostForm extends React.Component {
                     <div>
                         <input placeholder="Password" ref="password" type="text" name="password" value={password} onChange={this.handleChange}></input>
                     </div>
-                    <button type="submit" onClick={this.optionRegister}>Register</button>
-                    <button type="submit" onClick={this.optionLogin}>Login</button>
-                    <div id="statusLogin"></div>
+                    <button className="button1" type="submit" onClick={this.optionRegister}><span>Register</span></button>
+                    <button className="button1" type="submit" onClick={this.optionLogin}><span>Login</span></button>
+                    <h3 id="statusLogin"> </h3>
                 </form>
 
                 <br></br>
 
                 <form onSubmit={this.handleSearch}>
-                    <div id="user"></div>
+                    <h3 id="user"> </h3>
                     <div>
-                        <input placeholder="Type in Name or NIM" ref="search" type="text" name="search" value={search} onChange={this.handleChange}></input>
+                        <input placeholder="Type in Name or NIM..." ref="search" type="text" name="search" value={search} onChange={this.handleChange}></input>
+                        <button className="button2" type="submit" onClick={this.searchTypeName}><span>Search by Name</span></button>
+                        <button className="button2" type="submit" onClick={this.searchTypeId}><span>Search by NIM</span></button>
                     </div>
-                    <button type="submit" onClick={this.searchTypeName}>Search by Name</button>
-                    <button type="submit" onClick={this.searchTypeId}>Search by NIM</button>
-                    <div id="statusSearch"></div>
+                    <h3 id="statusSearch"> </h3>
                     <br></br>
                     <table>
                         <tbody>
@@ -220,8 +244,10 @@ class PostForm extends React.Component {
                         </tbody>
                     </table>
                     
-                    <button id="prev" type="submit" disabled={false} onClick={this.handlePrev}>Prev</button>
-                    <button id="next" type="submit" disabled={false} onClick={this.handleNext}>Next</button>
+                    <p align="center">
+                        <button className="button3" type="submit" disabled={prev} onClick={this.handlePrev}><span>Prev</span></button>
+                        <button className="button4" type="submit" disabled={next} onClick={this.handleNext}><span>Next</span></button>
+                    </p>
                 </form>
             </div>
         )
