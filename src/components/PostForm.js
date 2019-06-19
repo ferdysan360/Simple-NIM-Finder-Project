@@ -12,6 +12,7 @@ class PostForm extends React.Component {
             option: "",
             token: "",
             search: "",
+            searchTemp: "",
             count: 20,
             page: 0,
             searchType: "",
@@ -50,11 +51,13 @@ class PostForm extends React.Component {
     searchTypeName = e => {
         this.setState({searchType: "byname"})
         this.setState({page: 0})        // reset page
+        this.setState({searchTemp: this.state.search})
     }
 
     searchTypeId = e => {
         this.setState({searchType: "byid"})
         this.setState({page: 0 })       // reset page
+        this.setState({ searchTemp: this.state.search })
     }
 
     handleChange = e => {
@@ -72,18 +75,27 @@ class PostForm extends React.Component {
     handleSearch = e => {
         e.preventDefault()
 
+        /*
+        if (this.state.page > 0) {
+            document.getElementById("prev").disabled = false
+        }
+        else {
+            document.getElementById("prev").disabled = true
+        }
+        */
+
         var data
 
         if (this.state.searchType === "byid") { // a number from 0 to 9
             data = {
-                "query": this.state.search,
+                "query": this.state.searchTemp,
                 "count": this.state.count,
                 "page": this.state.page
             }
         }
         else {    // a Name
             data = {
-                "name": this.state.search,
+                "name": this.state.searchTemp,
                 "count": this.state.count,
                 "page": this.state.page
             }
@@ -108,7 +120,6 @@ class PostForm extends React.Component {
                 }
                 else {
                     ReactDOM.render(<div>{statusSearch}</div>, document.getElementById('statusSearch'))
-                    document.getElementById("next").disabled = true
                     this.assignMahasiswa([])
                 }
             })
@@ -162,6 +173,9 @@ class PostForm extends React.Component {
         const { username, password, search, mahasiswa } = this.state
         return (
             <div>
+                <h1>
+                    A Simple ITB NIM Finder
+                </h1>
                 <form onSubmit={this.handleRegisterLogin}>
                     <div>
                         <input placeholder="Username" ref="username" type="text" name="username" value={username} onChange={this.handleChange}></input>
@@ -184,16 +198,28 @@ class PostForm extends React.Component {
                     <button type="submit" onClick={this.searchTypeName}>Search by Name</button>
                     <button type="submit" onClick={this.searchTypeId}>Search by NIM</button>
                     <div id="statusSearch"></div>
-                    <div>
-                        Search results :
-                        <br></br>
-                        Nama | NIM TPB | NIM Jurusan | Prodi
-                        {
-                            mahasiswa.length ?
-                            mahasiswa.map(mhs => (<li key={mhs.nim_tpb}>{mhs.name} | {mhs.nim_tpb} | {mhs.nim_jur} | {mhs.prodi}</li>)) :
-                            null
-                        }
-                    </div>
+                    <br></br>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Nama</th>
+                                <th>NIM TPB</th>
+                                <th>NIM Jurusan</th>
+                                <th>Prodi</th>
+                            </tr>
+                            {
+                                mahasiswa.length ?
+                                    mahasiswa.map(mhs => (<tr key={mhs.nim_tpb}>
+                                        <td>{mhs.name}</td>
+                                        <td>{mhs.nim_tpb}</td>
+                                        <td>{mhs.nim_jur}</td>
+                                        <td>{mhs.prodi}</td>
+                                    </tr>)) :
+                                    null
+                            }
+                        </tbody>
+                    </table>
+                    
                     <button id="prev" type="submit" disabled={false} onClick={this.handlePrev}>Prev</button>
                     <button id="next" type="submit" disabled={false} onClick={this.handleNext}>Next</button>
                 </form>
@@ -203,6 +229,17 @@ class PostForm extends React.Component {
 }
 
 /*
-
+<div>
+    Search results :
+    <br></br>
+    Nama | NIM TPB | NIM Jurusan | Prodi
+    <br></br>
+    ------------------------------------------------------------------
+    {
+        mahasiswa.length ?
+        mahasiswa.map(mhs => (<li key={mhs.nim_tpb}>{mhs.name} | {mhs.nim_tpb} | {mhs.nim_jur} | {mhs.prodi}</li>)) :
+        null
+    }
+</div>
 */
 export default PostForm
