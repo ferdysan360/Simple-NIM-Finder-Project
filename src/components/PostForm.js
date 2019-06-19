@@ -129,7 +129,7 @@ class PostForm extends React.Component {
                             }
                         })
                         .catch(error => {
-                            console.lof(error)
+                            console.log(error)
                         })
                 }
                 else {
