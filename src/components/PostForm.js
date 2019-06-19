@@ -117,18 +117,8 @@ class PostForm extends React.Component {
                 // output data (handleOutput)
                 if (response.data.code >= 0) {
                     this.assignMahasiswa(response.data.payload)
-                    data = {
-                        "name": this.state.searchTemp,
-                        "count": this.state.count,
-                        "page": this.state.page + 1
-                    }
-                    getRequest = {
-                        method: 'GET',
-                        url: 'https://api.stya.net/nim/' + this.state.searchType + "?" + this.serialize(data),
-                        headers: {
-                            'Auth-Token': this.state.token
-                        }
-                    }
+                    data.page = data.page + 1
+                    getRequest.url = 'https://api.stya.net/nim/' + this.state.searchType + "?" + this.serialize(data)
                     axios(getRequest)
                         .then(response => {
                             if (response.data.code === 0) {
