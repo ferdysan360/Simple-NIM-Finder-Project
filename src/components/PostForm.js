@@ -176,7 +176,7 @@ class PostForm extends React.Component {
                 console.log(response.data)
                 var statusLogin = response.data.status
                 if (response.data.code === 0) {
-                    ReactDOM.render(<div>Login Successful</div>, document.getElementById('statusLogin'))
+                    ReactDOM.render(<div>{this.state.option} Successful</div>, document.getElementById('statusLogin'))
                     ReactDOM.render(<div></div>, document.getElementById('statusSearch'))
                     ReactDOM.render(<div>Welcome, {this.state.username}</div>, document.getElementById('user'))
                     this.assignToken(response.data.token)
@@ -185,8 +185,7 @@ class PostForm extends React.Component {
                     ReactDOM.render(<div>{statusLogin}</div>, document.getElementById('statusLogin'))
                     ReactDOM.render(<div></div>, document.getElementById('user'))
                     this.assignToken("")
-                }
-                
+                }          
             })
             .catch(error => {
                 console.log(error)
@@ -255,17 +254,6 @@ class PostForm extends React.Component {
 }
 
 /*
-<div>
-    Search results :
-    <br></br>
-    Nama | NIM TPB | NIM Jurusan | Prodi
-    <br></br>
-    ------------------------------------------------------------------
-    {
-        mahasiswa.length ?
-        mahasiswa.map(mhs => (<li key={mhs.nim_tpb}>{mhs.name} | {mhs.nim_tpb} | {mhs.nim_jur} | {mhs.prodi}</li>)) :
-        null
-    }
-</div>
+
 */
 export default PostForm
