@@ -1,68 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# A Simple NIM Finder
+## Seleksi 2 Labpro
 
-## Available Scripts
+## Nama: Ferdy Santoso
+## NIM : 13517116
 
-In the project directory, you can run:
+### `I. Cara Memasang/Menjalankan Aplikasi`
+Aplikasi dapat dijalankan dengan membuka link : (https://ferdysan360.github.io/A-Simple-NIM-Finder)
 
-### `npm start`
+dan jika aplikasi ingin dijalankan secara offline, file source code dapat diunduh dari repository di github proyek ini : (https://github.com/ferdysan360/Simple-NIM-Finder-Project).
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Notes** : Saya menggunakan create-react-app dan secara *default* create-react-app memiliki folder "build" dan "node modules", kedua folder tersebut tidak saya unggah ke repository github saya karena kedua folder tersebut memiliki 20000+ file, sehingga terlalu banyak untuk diunggah ke repository github saya. Maka jika asisten ingin mencoba secara offline, saya asumsikan kedua folder tersebut sudah ada di komputer masing-masing asisten
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+### `II. Cara Menggunakan Aplikasi`
+Saat aplikasi pertama kali dibuka, akan ada halaman register dan login serta search seperti di bawah ini :
 
-### `npm test`
+![Halaman Utama](1.png)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Kita dapat mengisi kolom Username dan Password, jika Username dan password kita belum terdaftar maka klik **Register**, jika sudah maka klik **Login**. 
 
-### `npm run build`
+Jika Username dan password anda sudah benar, maka anda akan berhasil melakukan login :
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Register dan Login](2.png)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Lalu, jika kita ingin melakukan pencarian, masukkan nama atau NIM mahasiswa yang ingin anda cari di kolom pencarian. Jika anda memasukan nama, maka klik tombol **Search by Name**, jika anda memasukan NIM, maka klik tombol **Search by NIM**. Akan dikeluarkan Nama, NIM TPB, NIM Jurusan, dan Prodi mahasiswa yang anda cari :
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![Searching](3.png)
 
-### `npm run eject`
+Jika anda melakukan *refresh* terhadap halaman website anda, maka user yang terakhir melakukan login akan otomatis dilakukan login ke NIM Finder ini :
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![Automatic Login](4.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `III. Desain Aplikasi`
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+### `IV. Library/Kakas yang Digunakan`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### `V. Review Terhadap Desain API yang Ada`
