@@ -11,6 +11,8 @@ dan jika aplikasi ingin dijalankan secara offline, file source code dapat diundu
 
 **Notes** : Saya menggunakan create-react-app dan secara *default* create-react-app memiliki folder "build" dan "node modules", kedua folder tersebut tidak saya unggah ke repository github saya karena kedua folder tersebut memiliki 20000+ file, sehingga terlalu banyak untuk diunggah ke repository github saya. Maka jika asisten ingin mencoba secara offline, saya asumsikan kedua folder tersebut sudah ada di komputer masing-masing asisten
 
+**Notes 2** : Saya menggunakan repository berbeda untuk menjalankan aplikasi saya melalui gh-pages. Repository untuk hasil build gh-pages saya ada di link berikut : (https://github.com/ferdysan360/A-Simple-NIM-Finder)
+
 ### `II. Cara Menggunakan Aplikasi`
 Saat aplikasi pertama kali dibuka, akan ada halaman register dan login serta search seperti di bawah ini :
 
@@ -30,12 +32,27 @@ Jika anda melakukan *refresh* terhadap halaman website anda, maka user yang tera
 
 ![Automatic Login](4.png)
 
+**Notes** : Aplikasi akan terlihat lebih baik jika dibuka di web browser desktop
+
 ### `III. Desain Aplikasi`
 
+Di aplikasi ini saya membuat *class* PostForm (terdapat di file PostForm.js) yang merupakan turunan dari React.Component, sehingga saya perlu melakukan *inheritance* di *class* tersebut. *class* PostForm* memiliki 13 atribut dan 14 method.
+
+**Design Pattern** yang saya gunakan adalah *Filter Design Pattern*, design pattern tersebut saya rasa paling cocok karena di Filter design pattern ada mekanisme *filtering* yang digunakan, di dalam aplikasi yang saya buat juga membutuhkan filtering dalam melakukan pencarian mahasiswa, sehingga design pattern ini cocok digunakan.
 
 
 ### `IV. Library/Kakas yang Digunakan`
 
-
+1. React js (dokumentasi : https://reactjs.org/)
+2. Node js (untuk melakukan build) (dokumentasi : https://nodejs.org/en/)
 
 ### `V. Review Terhadap Desain API yang Ada`
+
+### API NIM Finder (https://api.stya.net/nim) :
+
+#### Sudah Baik :
+1. Sudah dapat melakukan handle Register dan Login dengan baik (kemungkinan berhasil maupun error)
+2. Sudah dapat melakukan handle Searching dengan baik (kemungkinan berhasil maupun error)
+
+#### Kurang Baik :
+1. Tidak ada total mahasiswa atau total halaman dalam response JSON API saat melakukan searching, sehingga paginasi kurang sempurna, karena umumnya hanya dapat melakukan previous dan next saja. Lebih baik jika response JSON API mengembalikan total mahasiswa atau total halaman dari hasil pencarian.
