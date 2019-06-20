@@ -1,10 +1,13 @@
 # A Simple NIM Finder
+
 ## Seleksi 2 Labpro
 
 ## Nama: Ferdy Santoso
+
 ## NIM : 13517116
 
 ### `I. Cara Memasang/Menjalankan Aplikasi`
+
 Aplikasi dapat dijalankan dengan membuka link : (https://ferdysan360.github.io/A-Simple-NIM-Finder)
 
 dan jika aplikasi ingin dijalankan secara offline, file source code dapat diunduh dari repository di github proyek ini : (https://github.com/ferdysan360/Simple-NIM-Finder-Project).
@@ -14,6 +17,7 @@ dan jika aplikasi ingin dijalankan secara offline, file source code dapat diundu
 **Notes 2** : Saya menggunakan repository berbeda untuk menjalankan aplikasi saya melalui gh-pages. Repository untuk hasil build gh-pages saya ada di link berikut : (https://github.com/ferdysan360/A-Simple-NIM-Finder)
 
 ### `II. Cara Menggunakan Aplikasi`
+
 Saat aplikasi pertama kali dibuka, akan ada halaman register dan login serta search seperti di bawah ini :
 
 ![Halaman Utama](1.png)
@@ -38,8 +42,15 @@ Jika anda melakukan *refresh* terhadap halaman website anda, maka user yang tera
 
 Di aplikasi ini saya membuat *class* PostForm (terdapat di file PostForm.js) yang merupakan turunan dari React.Component, sehingga saya perlu melakukan *inheritance* di *class* tersebut. *class* PostForm* memiliki 13 atribut dan 14 method.
 
-**Design Pattern** yang saya gunakan adalah *Filter Design Pattern*, design pattern tersebut saya rasa paling cocok karena di Filter design pattern ada mekanisme *filtering* yang digunakan, di dalam aplikasi yang saya buat juga membutuhkan filtering dalam melakukan pencarian mahasiswa, sehingga design pattern ini cocok digunakan.
+**Cara Kerja** aplikasi ini adalah :
 
+Saat pengguna memasukan Username dan Password ke kolom **Username** dan **Password** dan lalu melakukan Register/Login, hasil masukan tersebut akan diubah dari bentuk object javascript ke bentuk url-encoded, yang lalu akan dilakukan **POST** request ke API NIM Finder yang disediakan.
+
+Jika Register/Login berhasil, username dan token hasil login akan disimpan di dalam cookies agar dapat digunakan saat mengakses website di lain waktu. Token hasil login akan disimpan untuk melakukan searching.
+
+Saat pengguna memasukan Nama/NIM ke kolom pencarian dan lalu melakukan pencarian (byName atau byId), hasil masukan tersebut akan diubah dari bentuk object ke bentuk url-encoded, yang lalu akan dilakukan **GET** request ke API NIM Finder yang disediakan. Hasil **GET** request tadi akan disimpan ke dalam array mahasiswa yang nantinya akan ditampilkan ke layar dalam bentuk tabel.
+
+**Design Pattern** yang saya gunakan adalah *Filter Design Pattern*, design pattern tersebut saya rasa paling cocok karena di Filter design pattern ada mekanisme *filtering* yang digunakan, di dalam aplikasi yang saya buat juga membutuhkan filtering dalam melakukan pencarian mahasiswa, sehingga design pattern ini cocok digunakan.
 
 ### `IV. Library/Kakas yang Digunakan`
 
@@ -51,8 +62,12 @@ Di aplikasi ini saya membuat *class* PostForm (terdapat di file PostForm.js) yan
 ### API NIM Finder (https://api.stya.net/nim) :
 
 #### Sudah Baik :
+
 1. Sudah dapat melakukan handle Register dan Login dengan baik (kemungkinan berhasil maupun error)
 2. Sudah dapat melakukan handle Searching dengan baik (kemungkinan berhasil maupun error)
 
 #### Kurang Baik :
+
 1. Tidak ada total mahasiswa atau total halaman dalam response JSON API saat melakukan searching, sehingga paginasi kurang sempurna, karena umumnya hanya dapat melakukan previous dan next saja. Lebih baik jika response JSON API mengembalikan total mahasiswa atau total halaman dari hasil pencarian.
+
+2. Saat melakukan pencarian dengan input *135171* (salah satu contoh), hasil pencarian dari API tidak hanya mengeluarkan mahasiswa dengan NIM *135171xx* namun API juga mengeluarkan mahasiswa dengan NIM *13517xx1* dan *13517x1x*. Menurut saya akan lebih baik dan lebih intuitif bagi user jika API hanya mengembalikan mahasiswa dengan NIM *135171xx* saja.
