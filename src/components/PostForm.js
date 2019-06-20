@@ -7,11 +7,22 @@ class PostForm extends React.Component {
     constructor(props) {
         super(props)    
 
+        var cookie = document.cookie
+        var cookieList = cookie.split(";")
+        var tokenTemp = ""
+        var userTemp = ""
+        
+        if (cookie !== "") {
+            var jsonParse = JSON.parse(cookieList[0].replace("username=",""))
+            userTemp = jsonParse.username
+            tokenTemp = jsonParse.token
+        }
+
         this.state = {
             username: "",
             password: "",
             option: "",
-            token: "", 
+            token: tokenTemp, 
             search: "",
             searchTemp: "",
             count: 20,
@@ -20,12 +31,21 @@ class PostForm extends React.Component {
             mahasiswa: [],
             prev: true,
             next: true,
-            user: ""
+            user: userTemp
         }
     }
 
+    // Fungsi untuk meng-handle perubahan cookie
+    setCookie = function (jsonUser) {
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var expires = ";expires=" + date.toUTCString();
+        var string = "username=" + jsonUser + expires + ";path=/;";
+        document.cookie = string;
+    }
+
     /* 
-    serialize function: Converts {obj} into url-encoded form
+    serialize function: mengubah {obj} menjadi bentuk url-encoded
     */
     serialize = function (obj) {
         var str = [];
@@ -36,46 +56,56 @@ class PostForm extends React.Component {
         return str.join("&");
     }
 
+    // Fungsi untuk meng-handle pilihan register
     optionRegister = e => {
         this.setState({option: "register"})
     }
 
+    // Fungsi untuk meng-handle pilihan login
     optionLogin = e => {
         this.setState({option: "login"})
     }
 
+    // Fungsi untuk meng-handle token
     assignToken = function(tokenTemp) {
         this.setState({token: tokenTemp})
     }
 
+    // Fungsi untuk meng-handle list of mahasiswa
     assignMahasiswa = function(data) {
         this.setState({mahasiswa: data})
     }
 
+    // Fungsi untuk meng-handle tipe searching "byname"
     searchTypeName = e => {
         this.setState({searchType: "byname"})
         this.setState({page: 0})        // reset page
         this.setState({searchTemp: this.state.search})
     }
 
+    // Fungsi untuk meng-handle tipe searching "byid"
     searchTypeId = e => {
         this.setState({searchType: "byid"})
         this.setState({page: 0 })       // reset page
         this.setState({ searchTemp: this.state.search })
     }
 
+    // Fungsi untuk meng-handle perubahan nilai pada sebuah variabel
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value })
     }
 
+    // Fungsi untuk meng-handle tombol next
     handleNext = e => {
         this.setState({page: (this.state.page + 1)})
     }
 
+    // Fungsi untuk meng-handle tombol previous
     handlePrev = e => {
         this.setState({page: (this.state.page - 1)})
     }
 
+    // Fungsi untuk meng-handle searching
     handleSearch = e => {
         e.preventDefault()
 
@@ -113,7 +143,6 @@ class PostForm extends React.Component {
 
         axios(getRequest)
             .then(response => {
-                console.log(response.data)
                 var statusSearch = response.data.status
 
                 // output data (handleOutput)
@@ -146,7 +175,7 @@ class PostForm extends React.Component {
                     this.setState({page: 0})
                     this.assignMahasiswa([])
                     this.setState({user: ""})
-                    this.assignToken({token: ""})
+                    this.assignToken("")
                 }
             })
             .catch(error => {
@@ -154,6 +183,7 @@ class PostForm extends React.Component {
             })
     }
 
+    // Fungsi untuk meng-handle register dan login
     handleRegisterLogin = e => {
         e.preventDefault()
 
@@ -175,24 +205,15 @@ class PostForm extends React.Component {
 
         axios(postRequest)
             .then(response => {
-                console.log(response.data)
                 var statusLogin = response.data.status
                 if (response.data.code === 0) {
                     ReactDOM.render(<div>{this.state.option} Successful</div>, document.getElementById('statusLogin'))
                     ReactDOM.render(<div></div>, document.getElementById('statusSearch'))
                     this.setState({user: this.state.username})
                     this.assignToken(response.data.token)
-                    var jsonTemp = {
-                        "username": this.state.username,
-                        "token": response.data.token
-                    }
-                    var fs = require("fs")
-                    fs.writeFile("./Token.json", JSON.stringify(jsonTemp), (err) => {
-                        if (err) {
-                            return console.log(err)
-                        }
-                        console.log("File has been created")
-                    })
+
+                    // jika login berhasil, set cookie dengan username dan token sekarang melalui json string
+                    this.setCookie(JSON.stringify({"username": this.state.username, "token": this.state.token}))
                 }
                 else {
                     ReactDOM.render(<div>{statusLogin}</div>, document.getElementById('statusLogin'))
@@ -273,7 +294,4 @@ class PostForm extends React.Component {
     }
 }
 
-/*
-
-*/
 export default PostForm
