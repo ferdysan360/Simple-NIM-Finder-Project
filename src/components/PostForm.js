@@ -2,15 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
+
 class PostForm extends React.Component {
     constructor(props) {
-        super(props)
+        super(props)    
 
         this.state = {
             username: "",
             password: "",
             option: "",
-            token: "",
+            token: "", 
             search: "",
             searchTemp: "",
             count: 20,
@@ -18,7 +19,8 @@ class PostForm extends React.Component {
             searchType: "",
             mahasiswa: [],
             prev: true,
-            next: true
+            next: true,
+            user: ""
         }
     }
 
@@ -116,25 +118,35 @@ class PostForm extends React.Component {
 
                 // output data (handleOutput)
                 if (response.data.code >= 0) {
+                    if (response.data.code === 20) {
+                        data.page = data.page + 1
+                        getRequest.url = 'https://api.stya.net/nim/' + this.state.searchType + "?" + this.serialize(data)
+                        axios(getRequest)
+                            .then(response => {
+                                if (response.data.code === 0) {
+                                    this.setState({ next: true })
+                                }
+                                else if (response.data.code > 0) {
+                                    this.setState({ next: false })
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            })
+                    }
+                    else {
+                        this.setState({next: true})
+                    }
                     this.assignMahasiswa(response.data.payload)
-                    data.page = data.page + 1
-                    getRequest.url = 'https://api.stya.net/nim/' + this.state.searchType + "?" + this.serialize(data)
-                    axios(getRequest)
-                        .then(response => {
-                            if (response.data.code === 0) {
-                                this.setState({next: true})
-                            }
-                            else if (response.data.code > 0) {
-                                this.setState({next: false})
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        })
                 }
                 else {
                     ReactDOM.render(<div>{statusSearch}</div>, document.getElementById('statusSearch'))
+                    this.setState({prev: true})
+                    this.setState({next: true})
+                    this.setState({page: 0})
                     this.assignMahasiswa([])
+                    this.setState({user: ""})
+                    this.assignToken({token: ""})
                 }
             })
             .catch(error => {
@@ -168,12 +180,23 @@ class PostForm extends React.Component {
                 if (response.data.code === 0) {
                     ReactDOM.render(<div>{this.state.option} Successful</div>, document.getElementById('statusLogin'))
                     ReactDOM.render(<div></div>, document.getElementById('statusSearch'))
-                    ReactDOM.render(<div>Welcome, {this.state.username}</div>, document.getElementById('user'))
+                    this.setState({user: this.state.username})
                     this.assignToken(response.data.token)
+                    var jsonTemp = {
+                        "username": this.state.username,
+                        "token": response.data.token
+                    }
+                    var fs = require("fs")
+                    fs.writeFile("./Token.json", JSON.stringify(jsonTemp), (err) => {
+                        if (err) {
+                            return console.log(err)
+                        }
+                        console.log("File has been created")
+                    })
                 }
                 else {
                     ReactDOM.render(<div>{statusLogin}</div>, document.getElementById('statusLogin'))
-                    ReactDOM.render(<div></div>, document.getElementById('user'))
+                    this.setState({user: ""})
                     this.assignToken("")
                 }          
             })
@@ -183,7 +206,13 @@ class PostForm extends React.Component {
     }
 
     render() {
-        const { username, password, search, mahasiswa, prev, next } = this.state
+        const { username, password, search, mahasiswa, prev, next, user } = this.state
+        /*
+        if (Token.token !== "-") {
+            this.assignToken(Token.token)
+            this.setState({ username: Token.username })
+        }
+        */
         return (
             <div>
                 <h1>
@@ -194,7 +223,7 @@ class PostForm extends React.Component {
                         <input placeholder="Username" ref="username" type="text" name="username" value={username} onChange={this.handleChange}></input>
                     </div>
                     <div>
-                        <input placeholder="Password" ref="password" type="text" name="password" value={password} onChange={this.handleChange}></input>
+                        <input placeholder="Password" ref="password" type="password" name="password" value={password} onChange={this.handleChange}></input>
                     </div>
                     <button className="button1" type="submit" onClick={this.optionRegister}><span>Register</span></button>
                     <button className="button1" type="submit" onClick={this.optionLogin}><span>Login</span></button>
@@ -204,7 +233,7 @@ class PostForm extends React.Component {
                 <br></br>
 
                 <form onSubmit={this.handleSearch}>
-                    <h3 id="user"> </h3>
+                    <h3>Welcome, {user}</h3>
                     <div>
                         <input placeholder="Type in Name or NIM..." ref="search" type="text" name="search" value={search} onChange={this.handleChange}></input>
                         <button className="button2" type="submit" onClick={this.searchTypeName}><span>Search by Name</span></button>
@@ -235,6 +264,7 @@ class PostForm extends React.Component {
                     
                     <p align="center">
                         <button className="button3" type="submit" disabled={prev} onClick={this.handlePrev}><span>Prev</span></button>
+                        <label>{this.state.page + 1}</label>
                         <button className="button4" type="submit" disabled={next} onClick={this.handleNext}><span>Next</span></button>
                     </p>
                 </form>

@@ -124,6 +124,12 @@ button[disabled] {
   background-color: #0056ac
 }
 
+label {
+  color: #ffffff;
+  background-color: #0056ac;
+  padding: 15px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
