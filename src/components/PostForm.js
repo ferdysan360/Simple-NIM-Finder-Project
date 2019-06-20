@@ -219,6 +219,7 @@ class PostForm extends React.Component {
                     ReactDOM.render(<div>{statusLogin}</div>, document.getElementById('statusLogin'))
                     this.setState({user: ""})
                     this.assignToken("")
+                    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 }          
             })
             .catch(error => {
